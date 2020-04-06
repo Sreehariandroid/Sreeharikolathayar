@@ -32,10 +32,11 @@ public class ListDataAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
+
         holder.bindRowView(listItems.get(position));
 
         if (TextUtils.isEmpty(listItems.get(position).getTitle())) {
-            listItems.get(position).setTitle("");
+            listItems.get(position).setTitle("Title not available");
         }
 
         if (TextUtils.isEmpty(listItems.get(position).getDesc())) {
@@ -50,6 +51,5 @@ public class ListDataAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
     public void setListItems(List<ItemElement> listItems) {
         this.listItems = listItems;
-        notifyDataSetChanged();
     }
 }

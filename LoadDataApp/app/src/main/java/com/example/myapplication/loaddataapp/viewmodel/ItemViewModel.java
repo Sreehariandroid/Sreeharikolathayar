@@ -6,6 +6,7 @@ import androidx.databinding.BaseObservable;
 import androidx.databinding.BindingAdapter;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.loaddataapp.R;
 import com.example.myapplication.loaddataapp.model.ItemElement;
 
@@ -32,10 +33,17 @@ public class ItemViewModel extends BaseObservable {
 
     @BindingAdapter("imageUrl")
     public static void setImage(ImageView imageView, String url) {
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.ic_noimage);
+        requestOptions.error(R.drawable.ic_noimage);
+        requestOptions.centerCrop();
+
+        requestOptions.dontAnimate();
+
         Glide.with(imageView.getContext())
+                .setDefaultRequestOptions(requestOptions)
                 .load(url)
-                .placeholder(R.drawable.ic_noimage)
-                .dontAnimate()
                 .into(imageView);
 
         Glide.getPhotoCacheDir(imageView.getContext());

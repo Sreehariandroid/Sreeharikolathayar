@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         activityMainBinding.swipeContainer.setOnRefreshListener(() -> {
             activityMainBinding.swipeContainer.setRefreshing(false);
+            mainViewModel.getItemList().clear();
             mainViewModel.makeApiCall();
         });
     }
