@@ -1,12 +1,18 @@
 package com.example.myapplication.loaddataapp.adapter;
 
+import com.example.myapplication.loaddataapp.model.ItemElement;
+
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.junit.Assert.*;
+import static junit.framework.TestCase.assertEquals;
 
+@RunWith(JUnit4.class)
 public class ListDataAdapterTest {
 private ListDataAdapter adapter;
 
@@ -16,20 +22,17 @@ private ListDataAdapter adapter;
     }
 
     @Test
-    public void getItemCount_emptyList_returnZero() {
-       // adapter.setListItems(Collections.emptyList());
-        assertTrue(adapter.getItemCount() == 0);
+    public void getItemCount_emptyList_shouldReturnZero() {
+        assertEquals(0, adapter.getItemCount());
     }
 
     @Test
-    public void onBindViewHolder() {
-    }
+    public void getItemCount_setOneItem_shouldReturnCorrectSize() {
+        List<ItemElement> list = new ArrayList<>();
+        list.add(new ItemElement());
 
-    @Test
-    public void getItemCount() {
-    }
+        adapter.setListItems(list);
 
-    @Test
-    public void setRowItems() {
+        assertEquals(1, adapter.getItemCount());
     }
 }

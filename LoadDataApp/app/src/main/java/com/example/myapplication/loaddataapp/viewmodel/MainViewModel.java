@@ -42,6 +42,9 @@ public class MainViewModel extends Observable {
         isRecycleViewVisible = new ObservableInt(View.VISIBLE);
     }
 
+   /*
+    ** API call to fetch json data
+    */
     public void makeApiCall() {
         isShowErrorMessage.set(View.GONE);
         isRecycleViewVisible.set(View.GONE);

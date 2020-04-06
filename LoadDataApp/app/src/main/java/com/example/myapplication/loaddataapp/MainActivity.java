@@ -74,6 +74,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
         mainViewModel.dispose();
     }
 
+    /**
+     *
+     * @param observable MainViewModel observable instance
+     * @param obj an argument passed to the <code>notifyObservers</code> method.
+     * This method will be called once the rest api call for fetch json data is success.
+     */
     @Override
     public void update(final Observable observable, final Object obj) {
 
