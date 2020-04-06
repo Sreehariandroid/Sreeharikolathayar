@@ -11,24 +11,23 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ApiHelper {
-
     public static Single<MainElement> getListData() {
         return Single
                 .create((SingleEmitter<MainElement> emitter) -> {
-                    ApiInterface apiInterface= RetrofitApi.getRetrofitInstance().create(ApiInterface.class);
+                    ApiInterface apiInterface = RetrofitApi.getRetrofitInstance().create(ApiInterface.class);
                     Call<MainElement> call = apiInterface.getData();
                     call.enqueue(new Callback<MainElement>() {
 
                         @Override
                         public void onResponse(@NonNull Call<MainElement> call, @NonNull Response<MainElement> response) {
-                           if(!emitter.isDisposed()) {
-                               emitter.onSuccess(response.body());
-                           }
+                            if (!emitter.isDisposed()) {
+                                emitter.onSuccess(response.body());
+                            }
                         }
 
                         @Override
                         public void onFailure(@NonNull Call<MainElement> call, @NonNull Throwable t) {
-                            if(!emitter.isDisposed()) {
+                            if (!emitter.isDisposed()) {
                                 emitter.onError(t);
                             }
                         }
