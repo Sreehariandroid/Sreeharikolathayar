@@ -6,16 +6,15 @@ import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.myapplication.loaddataapp.Util.NetworkUtil;
 import com.example.myapplication.loaddataapp.adapter.ListDataAdapter;
 import com.example.myapplication.loaddataapp.databinding.ActivityMainBinding;
 import com.example.myapplication.loaddataapp.viewmodel.MainViewModel;
 
-import java.util.Observable;
-import java.util.Observer;
-
-public class MainActivity extends AppCompatActivity implements Observer {
+public class MainActivity extends AppCompatActivity  {
     private ActivityMainBinding activityMainBinding;
     private MainViewModel mainViewModel;
 
@@ -23,27 +22,39 @@ public class MainActivity extends AppCompatActivity implements Observer {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mainViewModel.setErrorMessage(getString(R.string.error_message));
+
         activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setSupportActionBar(activityMainBinding.toolbar);
 
         activityMainBinding.swipeContainer.setOnRefreshListener(() -> {
             activityMainBinding.swipeContainer.setRefreshing(false);
-            mainViewModel.getItemList().clear();
-            mainViewModel.makeApiCall();
+
+            mainViewModel.makeApiCall(NetworkUtil.isNetworkAvailable(this));
         });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mainViewModel = new MainViewModel(this);
+
         activityMainBinding.setMainViewModel(mainViewModel);
         ListDataAdapter listDataAdapter = new ListDataAdapter(this);
         activityMainBinding.recycleList.setAdapter(listDataAdapter);
         activityMainBinding.recycleList.setLayoutManager(new LinearLayoutManager(this));
-        mainViewModel.addObserver(this);
-        mainViewModel.makeApiCall();
 
+        mainViewModel.makeApiCall(NetworkUtil.isNetworkAvailable(this));
+        mainViewModel.getItemsList().observe(this, itemElements -> {
+               if (itemElements != null && itemElements.size() > 0) {
+                   ListDataAdapter adapter = (ListDataAdapter) activityMainBinding.recycleList.getAdapter();
+
+                   if (adapter != null) {
+                       adapter.setListItems(itemElements);
+                   }
+                   activityMainBinding.toolbar.setTitle(mainViewModel.getTitle());
+               }
+        });
     }
 
     @Override
@@ -72,25 +83,5 @@ public class MainActivity extends AppCompatActivity implements Observer {
     protected void onDestroy() {
         super.onDestroy();
         mainViewModel.dispose();
-    }
-
-    /**
-     *
-     * @param observable MainViewModel observable instance
-     * @param obj an argument passed to the <code>notifyObservers</code> method.
-     * This method will be called once the rest api call for fetch json data is success.
-     */
-    @Override
-    public void update(final Observable observable, final Object obj) {
-
-        if (observable instanceof MainViewModel) {
-            ListDataAdapter listDataAdapter = (ListDataAdapter) activityMainBinding.recycleList.getAdapter();
-            MainViewModel mainViewModel = (MainViewModel) observable;
-
-            if (listDataAdapter != null) {
-                listDataAdapter.setListItems(mainViewModel.getItemList());
-            }
-            activityMainBinding.toolbar.setTitle(mainViewModel.getTitle());
-        }
     }
 }

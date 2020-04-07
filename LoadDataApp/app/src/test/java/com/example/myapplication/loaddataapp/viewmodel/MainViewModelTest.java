@@ -1,5 +1,7 @@
 package com.example.myapplication.loaddataapp.viewmodel;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.example.myapplication.loaddataapp.model.ItemElement;
 
 import org.junit.Before;
@@ -9,10 +11,10 @@ import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
@@ -37,14 +39,12 @@ public class MainViewModelTest {
 
     @Test
     public void getItemList_returnCorrectItemsList() {
-        ItemElement itemElement = new ItemElement();
-        List<ItemElement> itemList = new ArrayList<>();
-        itemList.add(itemElement);
+        MutableLiveData<List<ItemElement>> itemElementList = mock(MutableLiveData.class);
 
-        when(mainViewModel.getItemList()).thenReturn(itemList);
+        when(mainViewModel.getItemsList()).thenReturn(itemElementList);
 
-        List actualList = mainViewModel.getItemList();
+        MutableLiveData<List<ItemElement>> actualElementList = mainViewModel.getItemsList();
 
-        assertEquals(actualList, itemList);
+        assertEquals(actualElementList, itemElementList);
     }
 }
