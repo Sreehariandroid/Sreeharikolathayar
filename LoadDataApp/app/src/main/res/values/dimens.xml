@@ -1,3 +1,20 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="image_view_holder_size">100dp</dimen>
+
+    <dimen name="dimension_1dp">1dp</dimen>
+    <dimen name="dimension_2dp">2dp</dimen>
+    <dimen name="dimension_3dp">3dp</dimen>
+    <dimen name="dimension_4dp">4dp</dimen>
+    <dimen name="dimension_5dp">5dp</dimen>
+    <dimen name="dimension_6dp">6dp</dimen>
+    <dimen name="dimension_8dp">8dp</dimen>
+    <dimen name="dimension_10dp">10dp</dimen>
+    <dimen name="dimension_15dp">15dp</dimen>
+    <dimen name="dimension_20dp">20dp</dimen>
+
+    <!--text size-->
+    <dimen name="dimension_14sp">14sp</dimen>
+    <dimen name="dimension_16sp">16sp</dimen>
+    <dimen name="dimension_18sp">18sp</dimen>
 </resources>

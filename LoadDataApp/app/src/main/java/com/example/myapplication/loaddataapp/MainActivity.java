@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         super.onResume();
         mainViewModel = new MainViewModel(this);
         activityMainBinding.setMainViewModel(mainViewModel);
-        ListDataAdapter listDataAdapter = new ListDataAdapter();
+        ListDataAdapter listDataAdapter = new ListDataAdapter(this);
         activityMainBinding.recycleList.setAdapter(listDataAdapter);
         activityMainBinding.recycleList.setLayoutManager(new LinearLayoutManager(this));
         mainViewModel.addObserver(this);

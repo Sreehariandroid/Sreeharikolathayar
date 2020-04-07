@@ -1,8 +1,6 @@
 package com.example.myapplication.loaddataapp.viewmodel;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -10,6 +8,7 @@ import androidx.databinding.ObservableField;
 import androidx.databinding.ObservableInt;
 
 import com.example.myapplication.loaddataapp.R;
+import com.example.myapplication.loaddataapp.Util.NetworkUtil;
 import com.example.myapplication.loaddataapp.model.ItemElement;
 import com.example.myapplication.loaddataapp.network.ApiHelper;
 
@@ -46,17 +45,11 @@ public class MainViewModel extends Observable {
     ** API call to fetch json data
     */
     public void makeApiCall() {
-        isShowErrorMessage.set(View.GONE);
-        isRecycleViewVisible.set(View.GONE);
-        isProgressBarVisible.set(View.VISIBLE);
-
-        if (isNetworkAvailable()) {
+        if (NetworkUtil.isNetworkAvailable(context)) {
+            setViewsVisibility(View.VISIBLE, View.GONE, View.GONE);
             getItemData();
         } else {
-            errorMessage.set(context.getString(R.string.error_message));
-            isProgressBarVisible.set(View.GONE);
-            isShowErrorMessage.set(View.VISIBLE);
-            isRecycleViewVisible.set(View.GONE);
+            setViewsVisibility(View.GONE, View.VISIBLE, View.GONE);
         }
     }
 
@@ -70,20 +63,13 @@ public class MainViewModel extends Observable {
                         this.title = mainElement.getTitle();
                         setChanged();
                         notifyObservers();
-                        isProgressBarVisible.set(View.GONE);
-                        isShowErrorMessage.set(View.GONE);
-                        isRecycleViewVisible.set(View.VISIBLE);
+                        setViewsVisibility(View.GONE, View.GONE, View.VISIBLE);
                     } else {
-                        errorMessage.set(context.getString(R.string.error_message));
-                        isProgressBarVisible.set(View.GONE);
-                        isShowErrorMessage.set(View.VISIBLE);
-                        isRecycleViewVisible.set(View.GONE);
+                        setViewsVisibility(View.GONE, View.VISIBLE, View.GONE);
                     }
                 }, error -> {
                     errorMessage.set(context.getString(R.string.error_message));
-                    isProgressBarVisible.set(View.GONE);
-                    isShowErrorMessage.set(View.VISIBLE);
-                    isRecycleViewVisible.set(View.GONE);
+                    setViewsVisibility(View.GONE, View.VISIBLE, View.GONE);
                 });
         compositeDisposable.add(disposable);
     }
@@ -102,11 +88,9 @@ public class MainViewModel extends Observable {
         }
     }
 
-    private boolean isNetworkAvailable() {
-        ConnectivityManager cm =
-                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+    private void setViewsVisibility(int progBarVisibility, int showErrorMessageVisibility, int recycleViewVisibility) {
+        isProgressBarVisible.set(progBarVisibility);
+        isShowErrorMessage.set(showErrorMessageVisibility);
+        isRecycleViewVisible.set(recycleViewVisibility);
     }
 }

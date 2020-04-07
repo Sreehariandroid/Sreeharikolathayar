@@ -57,7 +57,7 @@
                  android:id="@+id/message"
                  android:layout_width="match_parent"
                  android:layout_height="match_parent"
-                 android:textSize="18sp"
+                 android:textSize="@dimen/dimension_18sp"
                  android:textColor="@color/red"
                  android:gravity="center"
                  app:layout_constraintBottom_toBottomOf="parent"
