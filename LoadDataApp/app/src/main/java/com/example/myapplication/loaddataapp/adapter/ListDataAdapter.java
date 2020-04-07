@@ -1,5 +1,6 @@
 package com.example.myapplication.loaddataapp.adapter;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -17,8 +18,10 @@ import java.util.List;
 
 public class ListDataAdapter extends RecyclerView.Adapter<ItemViewHolder> {
     private List<ItemElement> listItems;
+    private Context context;
 
-    public ListDataAdapter() {
+    public ListDataAdapter(Context context) {
+        this.context = context;
         this.listItems = Collections.emptyList();
     }
 
@@ -36,11 +39,11 @@ public class ListDataAdapter extends RecyclerView.Adapter<ItemViewHolder> {
         holder.bindRowView(listItems.get(position));
 
         if (TextUtils.isEmpty(listItems.get(position).getTitle())) {
-            listItems.get(position).setTitle("Title not available");
+            listItems.get(position).setTitle(context.getString(R.string.title_unavailable));
         }
 
         if (TextUtils.isEmpty(listItems.get(position).getDesc())) {
-            listItems.get(position).setDesc("Description not available.");
+            listItems.get(position).setDesc(context.getString(R.string.description_unavailable));
         }
     }
 
